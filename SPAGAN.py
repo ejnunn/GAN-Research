@@ -17,6 +17,9 @@ from skimage import color
 import numpy as np
 import os
 
+from utils import *
+from loss_functions import *
+
 # global variable to avoid refactoring each class
 target_shape = 256
 
