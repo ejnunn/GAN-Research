@@ -17,6 +17,9 @@ from skimage import color
 import numpy as np
 import os
 
+# global variable to avoid refactoring each class
+target_shape = 3
+
 class ResidualBlock(nn.Module):
     '''
     ResidualBlock Class:
