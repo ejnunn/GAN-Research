@@ -277,7 +277,7 @@ class SPAGAN():
   def load_weights(self, weights_file):
     self.model_dir = os.path.dirname(weights_file) # 'drive/MyDrive/GAN Research/SPAGAN/models/smile/'
 
-    pre_dict = torch.load(latest_checkpoint)
+    pre_dict = torch.load(weights_file)
     self.gen_AB.load_state_dict(pre_dict['gen_AB'])
     self.gen_BA.load_state_dict(pre_dict['gen_BA'])
     self.gen_opt.load_state_dict(pre_dict['gen_opt'])
