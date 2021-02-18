@@ -15,6 +15,7 @@ import shutil # file management
 import torch.nn.functional as F # used in Hyperparameters cell
 from skimage import color
 import numpy as np
+import os
 
 class ResidualBlock(nn.Module):
     '''
