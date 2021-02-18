@@ -25,16 +25,16 @@ def total_trainable_parameters(models):
 # real_A | real_B
 # fake_A | fake_B
 def show_tensor_images(image_tensor, num_images=25, size=(1, 28, 28)):
-    '''
-    Function for visualizing images: Given a tensor of images, number of images, and
-    size per image, plots and prints the images in an uniform grid.
-    '''
-    image_tensor = (image_tensor + 1) / 2
-    image_shifted = image_tensor
-    image_unflat = image_shifted.detach().cpu().view(-1, *size)
-    image_grid = make_grid(image_unflat[:num_images], nrow=5)
-    plt.imshow(image_grid.permute(1, 2, 0).squeeze())
-    plt.show()
+  '''
+  Function for visualizing images: Given a tensor of images, number of images, and
+  size per image, plots and prints the images in an uniform grid.
+  '''
+  image_tensor = (image_tensor + 1) / 2
+  image_shifted = image_tensor
+  image_unflat = image_shifted.detach().cpu().view(-1, *size)
+  image_grid = make_grid(image_unflat[:num_images], nrow=5)
+  plt.imshow(image_grid.permute(1, 2, 0).squeeze())
+  plt.show()
     
 # Save backup model weights to Google Drive account.
 def save_model_to_drive(model, drive_dir):
