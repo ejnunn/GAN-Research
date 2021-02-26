@@ -156,6 +156,10 @@ class SPAGAN():
       self.random_weights()
 
   def random_weights(self):
+  	assert self.gen_AB != None
+  	assert self.gen_BA != None
+  	assert self.disc_A != None
+  	assert self.disc_B != None
     self.gen_AB = self.gen_AB.apply(self.weights_init)
     self.gen_BA = self.gen_BA.apply(self.weights_init)
     self.disc_A = self.disc_A.apply(self.weights_init)
