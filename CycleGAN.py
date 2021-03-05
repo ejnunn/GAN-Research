@@ -142,10 +142,10 @@ class CycleGAN():
       self.random_weights()
 
   def random_weights(self):
-    self.gen_AB = gen_AB.apply(self.weights_init)
-    self.gen_BA = gen_BA.apply(self.weights_init)
-    self.disc_A = disc_A.apply(self.weights_init)
-    self.disc_B = disc_B.apply(self.weights_init)
+    self.gen_AB = self.gen_AB.apply(self.weights_init)
+    self.gen_BA = self.gen_BA.apply(self.weights_init)
+    self.disc_A = self.disc_A.apply(self.weights_init)
+    self.disc_B = self.disc_B.apply(self.weights_init)
   
   def weights_init(self, m):
       if isinstance(m, nn.Conv2d) or isinstance(m, nn.ConvTranspose2d):
