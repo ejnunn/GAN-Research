@@ -40,7 +40,7 @@ def show_tensor_images(image_tensor, num_images=25, size=(1, 28, 28)):
 def save_model_to_drive(model, filename):
   try:
     # Copy latest checkpoint to Drive for permenant storage
-    save_filename = model.model_name + filename
+    save_filename = model.model_dir + filename
     torch.save({
       'gen_AB': model.gen_AB.state_dict(),
       'gen_BA': model.gen_BA.state_dict(),
