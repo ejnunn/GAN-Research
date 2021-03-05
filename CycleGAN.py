@@ -124,6 +124,8 @@ class CycleGAN():
     self.device = device
     self.dim_A = dim_A
     self.dim_B = dim_B
+    self.load_shape = load_shape
+    self.target_shape = target_shape
 
     # Define model architecture
     self.gen_AB = Generator(self.dim_A, self.dim_B).to(self.device)
