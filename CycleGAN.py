@@ -18,7 +18,7 @@ import numpy as np
 import os
 
 from GAN_Research.utils import *
-from GAN_Research.loss_functions import *
+from GAN_Research.cycleGAN_losses import *
 from GAN_Research.layers import *
 
 # global variable to avoid refactoring each class
@@ -186,6 +186,7 @@ class CycleGAN():
             real_A = real_A.to(self.device)
             real_B = real_B.to(self.device)
 
+            print(real_A.shape)
             ### Update discriminator A ###
             self.disc_A_opt.zero_grad() # Zero out the gradient before backpropagation
             with torch.no_grad():
