@@ -1,5 +1,5 @@
 '''
-Class definitions for SPA-GAN and all related NN blocks.
+Class definitions for CycleGAN and all related NN blocks.
 '''
 
 import torch
@@ -172,7 +172,6 @@ class CycleGAN():
     mean_generator_loss = 0
     mean_discriminator_loss = 0
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
-
     cur_step = 0
     
     for epoch in range(num_epochs):
@@ -186,7 +185,6 @@ class CycleGAN():
             real_A = real_A.to(self.device)
             real_B = real_B.to(self.device)
 
-            print(real_A.shape)
             ### Update discriminator A ###
             self.disc_A_opt.zero_grad() # Zero out the gradient before backpropagation
             with torch.no_grad():
@@ -198,8 +196,8 @@ class CycleGAN():
             ### Update discriminator B ###
             self.disc_B_opt.zero_grad() # Zero out the gradient before backpropagation
             with torch.no_grad():
-                fake_B = self.gen_AB(real_A_input)
-            disc_B_loss = get_disc_loss(real_B_input, fake_B, self.disc_B, adv_criterion)
+                fake_B = self.gen_AB(real_A)
+            disc_B_loss = get_disc_loss(real_B, fake_B, self.disc_B, adv_criterion)
             disc_B_loss.backward(retain_graph=True) # Update gradients
             # disc_B_opt.step() # Update optimizer
 
@@ -246,7 +244,20 @@ class CycleGAN():
             ### Save to Google Drive ###
             if epoch % save_epoch == 0:
               filename =  self.model_name + '_' + str(epoch)
-              save_model_to_drive(self, filename)
+              try:
+                # Copy latest checkpoint to Drive for permenant storage
+                save_filename = self.model_dir + filename
+                torch.save({
+                  'gen_AB': self.gen_AB.state_dict(),
+                  'gen_BA': self.gen_BA.state_dict(),
+                  'gen_opt': self.gen_opt.state_dict(),
+                  'disc_A': self.disc_A.state_dict(),
+                  'disc_A_opt': self.disc_A_opt.state_dict(),
+                  'disc_B': self.disc_B.state_dict(),
+                  'disc_B_opt': self.disc_B_opt.state_dict()
+                }, f"{save_filename}.pth")
+              except:
+                print('Need to mount a Google Drive account to runtime.')
 
             cur_step += 1
 
