@@ -63,7 +63,6 @@ class Generator(nn.Module):
         Parameters:
             x: image tensor of shape (batch size, channels, height, width)
         '''
-        print('x.shape =', x.shape)
         x0 = self.upfeature(x)
         x1 = self.contract1(x0)
         x2 = self.contract2(x1)
@@ -186,7 +185,6 @@ class CycleGAN():
             real_B = real_B.to(self.device)
 
             ### Update discriminator A ###
-            print('real_A.shape =', real_A.shape)
             self.disc_A_opt.zero_grad() # Zero out the gradient before backpropagation
             with torch.no_grad():
                 fake_A = self.gen_BA(real_B)
