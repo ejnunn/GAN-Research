@@ -5,7 +5,7 @@ Class definitions for SPA-GAN and all related NN blocks.
 import torch
 from torch import nn
 from tqdm.auto import tqdm # progress bars
-import torchvision
+import torchvisio
 from torchvision import transforms
 from torchvision.utils import make_grid
 from torch.utils.data import DataLoader

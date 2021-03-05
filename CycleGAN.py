@@ -78,11 +78,7 @@ class Generator(nn.Module):
         x12 = self.expand2(x11)
         x13 = self.expand3(x12)
         xn = self.downfeature(x13)
-
-        # attn_map = x13.clone()
-        attn_map_norm = attn_map_norm_and_upsample(x13, target_shape)
-
-        return self.tanh(xn), attn_map_norm
+        return self.tanh(xn)
         
 class Discriminator(nn.Module):
     '''
@@ -107,19 +103,9 @@ class Discriminator(nn.Module):
         x2 = self.contract2(x1)
         x3 = self.contract3(x2)
         xn = self.final(x3)
+        return xn
 
-        # Copied from https://github.com/szagoruyko/attention-transfer/blob/master/visualize-attention.ipynb
-        # Trying to get attention map for layer x3. Is this right?
-        # x3 selected because it most likely correlates to discriminative object parts
-        # attn_map = x3.pow(2).mean(1) # [g.pow(2).mean(1) for g in (g0, g1, g2, g3)]
-        
-        # Take features from 2nd to last layer and create attention map 
-        # attn_map = x3.clone()
-        attn_map_sum = sum_of_abs_values_over_channels(x3)
-        attn_map_norm = attn_map_norm_and_upsample(attn_map_sum, target_shape)
-        return xn, attn_map_norm
-
-class SPAGAN():
+class CycleGAN():
   '''
   SPA-GAN model ready to train on Smile/Not Smile dataset from CelebA.
 
@@ -129,7 +115,7 @@ class SPAGAN():
     - dim_A: Default model to accept RGB images
     - dim_B: B&W images will be broadcast to 3 dims
   '''
-  def __init__(self, weights_file=None, model_name='smile', model_dir='drive/MyDrive/GAN Research/SPAGAN/models/smile/', dim_A=3, dim_B=3, \
+  def __init__(self, weights_file=None, model_name='smile', model_dir='drive/MyDrive/GAN Research/CycleGAN/models/smile/', dim_A=3, dim_B=3, \
                load_shape=286, target_shape=256, device='cuda', lr=0.0002):
     # Model Hyperparameters
     self.weights_file = weights_file
@@ -198,26 +184,18 @@ class SPAGAN():
             real_A = real_A.to(self.device)
             real_B = real_B.to(self.device)
 
-            ### Feed input image to discriminator to get feature map ###
-            _, real_A_fm = self.disc_A(real_A)
-            _, real_B_fm = self.disc_B(real_B)
-
-            ### Element-wise product of input image and feature map ###
-            real_A_input = torch.mul(real_A, real_A_fm)
-            real_B_input = torch.mul(real_B, real_B_fm)
-
             ### Update discriminator A ###
             self.disc_A_opt.zero_grad() # Zero out the gradient before backpropagation
             with torch.no_grad():
-                fake_A, _ = self.gen_BA(real_B_input)
-            disc_A_loss = get_disc_loss(real_A_input, fake_A, self.disc_A, adv_criterion)
+                fake_A = self.gen_BA(real_B)
+            disc_A_loss = get_disc_loss(real_A, fake_A, self.disc_A, adv_criterion)
             disc_A_loss.backward(retain_graph=True) # Update gradients
             # disc_A_opt.step() # Update optimizer
 
             ### Update discriminator B ###
             self.disc_B_opt.zero_grad() # Zero out the gradient before backpropagation
             with torch.no_grad():
-                fake_B, _ = self.gen_AB(real_A_input)
+                fake_B = self.gen_AB(real_A_input)
             disc_B_loss = get_disc_loss(real_B_input, fake_B, self.disc_B, adv_criterion)
             disc_B_loss.backward(retain_graph=True) # Update gradients
             # disc_B_opt.step() # Update optimizer
@@ -225,7 +203,7 @@ class SPAGAN():
             ### Update generator ###
             self.gen_opt.zero_grad()
             gen_loss, fake_A, fake_B = get_gen_loss(
-                real_A, real_B, real_A_input, real_B_input, self.gen_AB, self.gen_BA, \
+                real_A, real_B, self.gen_AB, self.gen_BA, \
                 self.disc_A, self.disc_B, adv_criterion, recon_criterion, recon_criterion
             )
             
