@@ -37,10 +37,10 @@ def show_tensor_images(image_tensor, num_images=25, size=(1, 28, 28)):
   plt.show()
     
 # Save backup model weights to Google Drive account.
-def save_model_to_drive(model, drive_dir, filename):
+def save_model_to_drive(model, filename):
   try:
     # Copy latest checkpoint to Drive for permenant storage
-    save_filename = drive_dir + filename
+    save_filename = model.model_name + filename
     torch.save({
       'gen_AB': model.gen_AB.state_dict(),
       'gen_BA': model.gen_BA.state_dict(),

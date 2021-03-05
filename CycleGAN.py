@@ -226,7 +226,6 @@ class CycleGAN():
             ### Visualization code ###
             if cur_step % display_step == 0:
                 print(f"Epoch {epoch}: Step {cur_step}: Generator (U-Net) loss: {mean_generator_loss}, Discriminator loss: {mean_discriminator_loss}")
-                show_tensor_images(torch.cat([real_A_input, real_B_input]), size=(self.dim_A, target_shape, target_shape))
                 show_tensor_images(torch.cat([real_A, real_B]), size=(self.dim_A, target_shape, target_shape))
                 show_tensor_images(torch.cat([fake_B, fake_A]), size=(self.dim_B, target_shape, target_shape))
                 mean_generator_loss = 0
