@@ -63,6 +63,7 @@ class Generator(nn.Module):
         Parameters:
             x: image tensor of shape (batch size, channels, height, width)
         '''
+        print('x.shape =', x.shape)
         x0 = self.upfeature(x)
         x1 = self.contract1(x0)
         x2 = self.contract2(x1)
