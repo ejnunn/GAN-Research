@@ -166,11 +166,13 @@ class CycleGAN():
     self.disc_B.load_state_dict(pre_dict['disc_B'])
     self.disc_B_opt.load_state_dict(pre_dict['disc_B_opt'])
 
-  def train(self, dataloader, adv_criterion=nn.MSELoss(), recon_criterion=nn.L1Loss(), num_epochs=25, save_epoch=1, \
+  def train(self, dataset, adv_criterion=nn.MSELoss(), recon_criterion=nn.L1Loss(), num_epochs=25, save_epoch=1, \
             fast_save=True, display_step=500, batch_size=1, is_inception=False):
     # Initialize local variables
     mean_generator_loss = 0
     mean_discriminator_loss = 0
+    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+
     cur_step = 0
     
     for epoch in range(num_epochs):
