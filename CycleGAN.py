@@ -186,6 +186,7 @@ class CycleGAN():
             real_B = real_B.to(self.device)
 
             ### Update discriminator A ###
+            print('real_A.shape =', real_A.shape)
             self.disc_A_opt.zero_grad() # Zero out the gradient before backpropagation
             with torch.no_grad():
                 fake_A = self.gen_BA(real_B)
