@@ -5,6 +5,9 @@ PyTorch implementation of [CycleGAN](https://arxiv.org/abs/1703.10593) trained o
 
 Exploring how alterations to the Frechet Inception Distance (FID) evaluation metric improves the human-perceved quality of generated images.
 
+---
+
+### Table of Contents
 1. About The Project
 1.1 Built With
 2. Getting Started
@@ -14,4 +17,6 @@ Exploring how alterations to the Frechet Inception Distance (FID) evaluation met
 6. License
 7. Contact
 8. Acknowledgements
+
+---
 
