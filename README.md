@@ -99,9 +99,9 @@ SOFTWARE.
 
 Eric Nunn
 
-[LinkedIn](https://www.linkedin.com/in/eric-j-nunn/)
+[***LinkedIn***](https://www.linkedin.com/in/eric-j-nunn/)
 
-[Twitter](https://twitter.com/EricNunn11)
+[***Twitter***](https://twitter.com/EricNunn11)
 
 
 
@@ -110,9 +110,9 @@ Eric Nunn
 
 ## 8. Acknowledgements
 
-Faculty Advisor - Dr. Shadrokh Samavi
+Dr. Shadrokh Samavi - Faculty Advisor 
 
-[Google Scholar](https://scholar.google.com/citations?user=Hj3vz2YAAAAJ&hl=en)
+[***Google Scholar***](https://scholar.google.com/citations?user=Hj3vz2YAAAAJ&hl=en)
 
 
 
