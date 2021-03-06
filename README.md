@@ -9,14 +9,13 @@ Exploring how alterations to the Frechet Inception Distance (FID) evaluation met
 
 ### Table of Contents
 1. About The Project
-1.1 Built With
-2. Getting Started
-3. Usage
-4. Roadmap
-5. Contributing
-6. License
-7. Contact
-8. Acknowledgements
+3. Tools
+4. Usage
+5. Roadmap
+6. Contributing
+7. License
+8. Contact
+9. Acknowledgements
 
 ---
 
@@ -64,13 +63,43 @@ Traditionally, these feature maps are obtained by extracting the final pooling l
 
 ## 6. License
 
+MIT License
+
+Copyright (c) 2021 Eric Nunn
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 ---
 
 ## 7. Contact
 
+Eric Nunn
+
+[LinkedIn](https://www.linkedin.com/in/eric-j-nunn/)
+
+[Twitter](https://twitter.com/EricNunn11)
 
 ---
 
 ## 8. Acknowledgements
+
+Faculty Advisor - Dr. Shadrokh Samavi
+
+[Google Scholar](https://scholar.google.com/citations?user=Hj3vz2YAAAAJ&hl=en)
 
