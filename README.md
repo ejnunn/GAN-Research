@@ -20,3 +20,40 @@ Exploring how alterations to the Frechet Inception Distance (FID) evaluation met
 
 ---
 
+## 1. About The Project
+
+---
+
+## 2. Tools
+
+
+---
+
+## 3. Usage
+
+
+---
+
+## 4. Roadmap
+
+
+
+--- 
+
+## 5. Contributing
+
+
+---
+
+## 6. License
+
+
+---
+
+## 7. Contact
+
+
+---
+
+## 8. Acknowledgements
+
