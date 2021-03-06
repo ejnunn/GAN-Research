@@ -22,6 +22,15 @@ Exploring how alterations to the Frechet Inception Distance (FID) evaluation met
 
 ## 1. About The Project
 
+This project was undertaken to satisfy the [CPSC5900 Graduate Research Project](https://www.seattleu.edu/scieng/computer-science/projects/grad-research/) at [Seattle University's Computer Science](https://www.seattleu.edu/scieng/computer-science/) department. Its main purpose is to explore field of Deep Learning and generative adversarial networks (GANS) for image generation, and their output quality metrics.
+
+One of the most commonly used metrics is called the [Frechet Inception Distance (FID)](https://en.wikipedia.org/wiki/Fr%C3%A9chet_inception_distance) measures the distance between two distributions of high-dimentional feature maps obtained by extracting the final pooling layer activatations of [Inception V3](https://arxiv.org/abs/1512.00567)
+
+
+
+
+
+
 ---
 
 ## 2. Tools
