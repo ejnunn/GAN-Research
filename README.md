@@ -35,17 +35,24 @@ Traditionally, these feature maps are obtained by extracting the final pooling l
 
 
 
-
-
-
 ---
 
 ## 2. Tools
+
+- Python3
+
+- PyTorch for GAN model development. 
+
+- [Google Colaboratory](https://colab.research.google.com/notebooks/intro.ipynb) for access to GPU-accelerated interactive notebooks to train models and execute scripts.
 
 
 ---
 
 ## 3. Usage
+
+Use Colab notebooks to experiment with GAN model alterations and train model weights using Colab's GPU acceleration. Then transfer stable code into appropriate modules to reuse for future experiments. Keep Colab notebooks focused on single experiment by preparing the environment, loading the data, and performing the calculations. Keep data exploration and formal experimentation files separate to avoid confusion.
+
+
 
 
 ---
@@ -54,9 +61,6 @@ Traditionally, these feature maps are obtained by extracting the final pooling l
 
 
 
---- 
-
-## 5. Contributing
 
 
 ---
@@ -85,6 +89,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+
+
+
+
 ---
 
 ## 7. Contact
@@ -95,6 +103,9 @@ Eric Nunn
 
 [Twitter](https://twitter.com/EricNunn11)
 
+
+
+
 ---
 
 ## 8. Acknowledgements
@@ -102,4 +113,9 @@ Eric Nunn
 Faculty Advisor - Dr. Shadrokh Samavi
 
 [Google Scholar](https://scholar.google.com/citations?user=Hj3vz2YAAAAJ&hl=en)
+
+
+
+
+
 
