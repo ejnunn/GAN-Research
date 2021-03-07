@@ -11,7 +11,7 @@ import torch
 import torch.nn as nn  # All neural network modules, nn.Linear, nn.Conv2d, BatchNorm, Loss functions
 
 
-class GoogLeNet(nn.Module):
+class Inception_v3(nn.Module):
     def __init__(self, aux_logits=True, num_classes=1000, include_top=True, all_feature_maps=False):
         super(GoogLeNet, self).__init__()
         assert aux_logits == True or aux_logits == False
