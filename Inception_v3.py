@@ -60,7 +60,7 @@ class GoogLeNet(nn.Module):
         x = self.conv1(x)
         x = self.maxpool1(x)
         x = self.conv2(x)
-        # x = self.conv3(x)
+        x = self.conv3(x)
         x = self.maxpool2(x)
 
         x = self.inception3a(x)
