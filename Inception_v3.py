@@ -16,7 +16,9 @@ class GoogLeNet(nn.Module):
         super(GoogLeNet, self).__init__()
         assert aux_logits == True or aux_logits == False
         self.aux_logits = aux_logits
-
+        self.include_top = include_top
+        self.all_feature_maps = all_feature_maps
+        
         # Write in_channels, etc, all explicit in self.conv1, rest will write to
         # make everything as compact as possible, kernel_size=3 instead of (3,3)
         self.conv1 = conv_block(
