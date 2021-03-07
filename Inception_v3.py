@@ -17,7 +17,7 @@ class Inception_v3(nn.Module):
         assert aux_logits == True or aux_logits == False
         assert include_top == True or include_top == False
         assert all_feature_maps == True or all_feature_maps == False
-        
+
         self.aux_logits = aux_logits
         self.include_top = include_top
         self.all_feature_maps = all_feature_maps
@@ -65,7 +65,6 @@ class Inception_v3(nn.Module):
         x = self.conv1(x)
         x = self.maxpool1(x)
         x = self.conv2(x)
-        x = self.conv3(x)
         x = self.maxpool2(x)
 
         x = self.inception3a(x)
