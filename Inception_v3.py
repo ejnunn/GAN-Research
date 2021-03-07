@@ -15,10 +15,13 @@ class GoogLeNet(nn.Module):
     def __init__(self, aux_logits=True, num_classes=1000, include_top=True, all_feature_maps=False):
         super(GoogLeNet, self).__init__()
         assert aux_logits == True or aux_logits == False
+        assert include_top == True or include_top == False
+        assert all_feature_maps == True or all_feature_maps == False
+        
         self.aux_logits = aux_logits
         self.include_top = include_top
         self.all_feature_maps = all_feature_maps
-        
+
         # Write in_channels, etc, all explicit in self.conv1, rest will write to
         # make everything as compact as possible, kernel_size=3 instead of (3,3)
         self.conv1 = conv_block(
