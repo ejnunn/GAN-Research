@@ -13,7 +13,7 @@ import torch.nn as nn  # All neural network modules, nn.Linear, nn.Conv2d, Batch
 
 class Inception_v3(nn.Module):
     def __init__(self, aux_logits=True, num_classes=1000, include_top=True, all_feature_maps=False):
-        super(GoogLeNet, self).__init__()
+        super(Inception_v3, self).__init__()
         assert aux_logits == True or aux_logits == False
         assert include_top == True or include_top == False
         assert all_feature_maps == True or all_feature_maps == False
