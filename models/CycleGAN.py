@@ -1,5 +1,5 @@
 '''
-Class definitions for SPA-GAN and all related NN blocks.
+Class definitions for CycleGAN and all related NN blocks.
 '''
 
 import torch
@@ -17,9 +17,9 @@ from skimage import color
 import numpy as np
 import os
 
-from GAN_Research.utils import *
-from GAN_Research.loss_functions import *
-from GAN_Research.layers import *
+from GAN_Research.GAN_Research.GAN_Research.utils import *
+from GAN_Research.models.cycleGAN_losses import *
+from GAN_Research.models.layers import *
 
 # global variable to avoid refactoring each class
 target_shape = 256
@@ -78,11 +78,7 @@ class Generator(nn.Module):
         x12 = self.expand2(x11)
         x13 = self.expand3(x12)
         xn = self.downfeature(x13)
-
-        # attn_map = x13.clone()
-        attn_map_norm = attn_map_norm_and_upsample(x13, target_shape)
-
-        return self.tanh(xn), attn_map_norm
+        return self.tanh(xn)
         
 class Discriminator(nn.Module):
     '''
@@ -107,19 +103,9 @@ class Discriminator(nn.Module):
         x2 = self.contract2(x1)
         x3 = self.contract3(x2)
         xn = self.final(x3)
+        return xn
 
-        # Copied from https://github.com/szagoruyko/attention-transfer/blob/master/visualize-attention.ipynb
-        # Trying to get attention map for layer x3. Is this right?
-        # x3 selected because it most likely correlates to discriminative object parts
-        # attn_map = x3.pow(2).mean(1) # [g.pow(2).mean(1) for g in (g0, g1, g2, g3)]
-        
-        # Take features from 2nd to last layer and create attention map 
-        # attn_map = x3.clone()
-        attn_map_sum = sum_of_abs_values_over_channels(x3)
-        attn_map_norm = attn_map_norm_and_upsample(attn_map_sum, target_shape)
-        return xn, attn_map_norm
-
-class SPAGAN():
+class CycleGAN():
   '''
   SPA-GAN model ready to train on Smile/Not Smile dataset from CelebA.
 
@@ -129,7 +115,7 @@ class SPAGAN():
     - dim_A: Default model to accept RGB images
     - dim_B: B&W images will be broadcast to 3 dims
   '''
-  def __init__(self, weights_file=None, model_name='smile', model_dir='drive/MyDrive/GAN Research/SPAGAN/models/smile/', dim_A=3, dim_B=3, \
+  def __init__(self, weights_file=None, model_name='smile', model_dir='drive/MyDrive/GAN Research/CycleGAN/models/smile/', dim_A=3, dim_B=3, \
                load_shape=286, target_shape=256, device='cuda', lr=0.0002):
     # Model Hyperparameters
     self.weights_file = weights_file
@@ -138,6 +124,8 @@ class SPAGAN():
     self.device = device
     self.dim_A = dim_A
     self.dim_B = dim_B
+    self.load_shape = load_shape
+    self.target_shape = target_shape
 
     # Define model architecture
     self.gen_AB = Generator(self.dim_A, self.dim_B).to(self.device)
@@ -156,10 +144,10 @@ class SPAGAN():
       self.random_weights()
 
   def random_weights(self):
-    self.gen_AB = gen_AB.apply(self.weights_init)
-    self.gen_BA = gen_BA.apply(self.weights_init)
-    self.disc_A = disc_A.apply(self.weights_init)
-    self.disc_B = disc_B.apply(self.weights_init)
+    self.gen_AB = self.gen_AB.apply(self.weights_init)
+    self.gen_BA = self.gen_BA.apply(self.weights_init)
+    self.disc_A = self.disc_A.apply(self.weights_init)
+    self.disc_B = self.disc_B.apply(self.weights_init)
   
   def weights_init(self, m):
       if isinstance(m, nn.Conv2d) or isinstance(m, nn.ConvTranspose2d):
@@ -180,11 +168,12 @@ class SPAGAN():
     self.disc_B.load_state_dict(pre_dict['disc_B'])
     self.disc_B_opt.load_state_dict(pre_dict['disc_B_opt'])
 
-  def train(self, dataloader, adv_criterion=nn.MSELoss(), recon_criterion=nn.L1Loss(), num_epochs=25, save_epoch=1, \
+  def train(self, dataset, adv_criterion=nn.MSELoss(), recon_criterion=nn.L1Loss(), num_epochs=25, save_epoch=1, \
             fast_save=True, display_step=500, batch_size=1, is_inception=False):
     # Initialize local variables
     mean_generator_loss = 0
     mean_discriminator_loss = 0
+    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
     cur_step = 0
     
     for epoch in range(num_epochs):
@@ -198,34 +187,26 @@ class SPAGAN():
             real_A = real_A.to(self.device)
             real_B = real_B.to(self.device)
 
-            ### Feed input image to discriminator to get feature map ###
-            _, real_A_fm = self.disc_A(real_A)
-            _, real_B_fm = self.disc_B(real_B)
-
-            ### Element-wise product of input image and feature map ###
-            real_A_input = torch.mul(real_A, real_A_fm)
-            real_B_input = torch.mul(real_B, real_B_fm)
-
             ### Update discriminator A ###
             self.disc_A_opt.zero_grad() # Zero out the gradient before backpropagation
             with torch.no_grad():
-                fake_A, _ = self.gen_BA(real_B_input)
-            disc_A_loss = get_disc_loss(real_A_input, fake_A, self.disc_A, adv_criterion)
+                fake_A = self.gen_BA(real_B)
+            disc_A_loss = get_disc_loss(real_A, fake_A, self.disc_A, adv_criterion)
             disc_A_loss.backward(retain_graph=True) # Update gradients
             # disc_A_opt.step() # Update optimizer
 
             ### Update discriminator B ###
             self.disc_B_opt.zero_grad() # Zero out the gradient before backpropagation
             with torch.no_grad():
-                fake_B, _ = self.gen_AB(real_A_input)
-            disc_B_loss = get_disc_loss(real_B_input, fake_B, self.disc_B, adv_criterion)
+                fake_B = self.gen_AB(real_A)
+            disc_B_loss = get_disc_loss(real_B, fake_B, self.disc_B, adv_criterion)
             disc_B_loss.backward(retain_graph=True) # Update gradients
             # disc_B_opt.step() # Update optimizer
 
             ### Update generator ###
             self.gen_opt.zero_grad()
             gen_loss, fake_A, fake_B = get_gen_loss(
-                real_A, real_B, real_A_input, real_B_input, self.gen_AB, self.gen_BA, \
+                real_A, real_B, self.gen_AB, self.gen_BA, \
                 self.disc_A, self.disc_B, adv_criterion, recon_criterion, recon_criterion
             )
             
@@ -246,7 +227,6 @@ class SPAGAN():
             ### Visualization code ###
             if cur_step % display_step == 0:
                 print(f"Epoch {epoch}: Step {cur_step}: Generator (U-Net) loss: {mean_generator_loss}, Discriminator loss: {mean_discriminator_loss}")
-                show_tensor_images(torch.cat([real_A_input, real_B_input]), size=(self.dim_A, target_shape, target_shape))
                 show_tensor_images(torch.cat([real_A, real_B]), size=(self.dim_A, target_shape, target_shape))
                 show_tensor_images(torch.cat([fake_B, fake_A]), size=(self.dim_B, target_shape, target_shape))
                 mean_generator_loss = 0
@@ -266,7 +246,20 @@ class SPAGAN():
             ### Save to Google Drive ###
             if epoch % save_epoch == 0:
               filename =  self.model_name + '_' + str(epoch)
-              save_model_to_drive(self, filename)
+              try:
+                # Copy latest checkpoint to Drive for permenant storage
+                save_filename = self.model_dir + filename
+                torch.save({
+                  'gen_AB': self.gen_AB.state_dict(),
+                  'gen_BA': self.gen_BA.state_dict(),
+                  'gen_opt': self.gen_opt.state_dict(),
+                  'disc_A': self.disc_A.state_dict(),
+                  'disc_A_opt': self.disc_A_opt.state_dict(),
+                  'disc_B': self.disc_B.state_dict(),
+                  'disc_B_opt': self.disc_B_opt.state_dict()
+                }, f"{save_filename}.pth")
+              except:
+                print('Need to mount a Google Drive account to runtime.')
 
             cur_step += 1
 
