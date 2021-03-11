@@ -17,9 +17,9 @@ from skimage import color
 import numpy as np
 import os
 
-from GAN_Research.utils import *
-from GAN_Research.loss_functions import *
-from GAN_Research.layers import *
+from GAN_Research.GAN_Research.GAN_Research.utils import *
+from GAN_Research.models.loss_functions import *
+from GAN_Research.models.layers import *
 
 # global variable to avoid refactoring each class
 target_shape = 256
