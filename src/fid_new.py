@@ -20,15 +20,12 @@ def get_activations(images, batch_size):
     --
     Returns: np array shape: (N, 2048), dtype: np.float32
     """
-    os.system('pip install --upgrade torchvision')
-    os.system('pip install --upgrade torch')
     assert images.shape[1:] == (3, 299, 299), "Expected input shape to be: (N,3,299,299)" +\
                                               ", but got {}".format(images.shape)
 
     num_images = images.shape[0]
-    print('loading model from torch.__version__ ', torch.__version__)
     original_model = torchvision.models.inception_v3(pretrained=True)
-    assert ['maxpool1', 'maxpool2', 'avgpool'] in tx.list_module_names(original_model), "Inception_v3 model does not contain necessary layers for FID calculations"
+    assert all(x in tx.list_module_names(original_model) for x in ['maxpool1', 'maxpool2', 'avgpool']), "Inception_v3 model does not contain necessary layers for FID calculations"
     inception_network = tx.Extractor(original_model, ['maxpool1', 'maxpool2', 'avgpool'])
     inception_network = to_cuda(inception_network)
     inception_network.eval()
