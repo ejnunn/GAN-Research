@@ -20,6 +20,8 @@ def get_activations(images, batch_size):
     --
     Returns: np array shape: (N, 2048), dtype: np.float32
     """
+    os.system('pip install --upgrade torchvision')
+    os.system('pip install --upgrade torch')
     assert images.shape[1:] == (3, 299, 299), "Expected input shape to be: (N,3,299,299)" +\
                                               ", but got {}".format(images.shape)
 
