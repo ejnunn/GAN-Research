@@ -24,6 +24,7 @@ def get_activations(images, batch_size):
                                               ", but got {}".format(images.shape)
 
     num_images = images.shape[0]
+    print('loading model from torch.__version__ ', torch.__version__)
     original_model = torchvision.models.inception_v3(pretrained=True)
     assert ['maxpool1', 'maxpool2', 'avgpool'] in tx.list_module_names(original_model), "Inception_v3 model does not contain necessary layers for FID calculations"
     inception_network = tx.Extractor(original_model, ['maxpool1', 'maxpool2', 'avgpool'])
