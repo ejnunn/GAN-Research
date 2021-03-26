@@ -220,7 +220,7 @@ def to_cuda(elements):
     return elements
 
 
-def load_images(path):
+def load_images(path, verbose=False):
     """ Loads all .png or .jpg images from a given path
     Warnings: Expects all images to be of same dtype and shape.
     Args:
@@ -231,7 +231,8 @@ def load_images(path):
     image_paths = []
     image_extensions = ["png", "jpg"]
     for ext in image_extensions:
-        print("Looking for images in", os.path.join(path, "*.{}".format(ext)))
+        if verbose:
+            print("Looking for images in", os.path.join(path, "*.{}".format(ext)))
         for impath in glob.glob(os.path.join(path, "*.{}".format(ext))):
             image_paths.append(impath)
     first_image = cv2.imread(image_paths[0])
